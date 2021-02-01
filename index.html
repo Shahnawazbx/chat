@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat App by Hyvor Developer</title>
+
+<style type="text/css">
+	* {
+		box-sizing:border-box;
+	}
+	#content {
+		width:600px;
+		max-width:100%;
+		margin:30px auto;
+		background-color:#fafafa;
+		padding:20px;
+	}
+	#message-box {
+		min-height:400px;
+		overflow:auto;
+	}
+	.author {
+		margin-right:5px;
+		font-weight:600;
+	}
+	.text-box {
+		width:100%;
+		border:1px solid #eee;
+		padding:10px;
+		margin-bottom:10px;
+	}
+	.left{
+	float:left;
+	clear:both;
+	background:silver;
+	border: 1px solid #e61212;
+	}
+	.right{
+	float:right;
+	clear:both;
+	background:#eababa;
+	border: 1px solid #e61212;
+	}
+	.msg{
+		padding:5px;
+		border-radius:10px;
+	}
+	body{
+	
+		background-image:linear-gradient(rgb(255,255,255), rgb(255,255,255), rgb(109,39,239));
+	}
+</style>
+<script defer src = "/socket.io/socket.io.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+
+</head>
+<body>
+<div id="content">
+	<div id="message-box">
+		<?php 
+		if(!empty($result)) {
+		foreach ($result as $row) : ?>
+			<div>
+				<span class="author"><?= $row['name'] ?>:</span>
+				<span class="messsage-text"><?= $row['message'] ?></span>
+			</div>	
+		<?php endforeach;
+		}
+		?>	
+		
+	</div>
+	<div id="connecting">Connecting to web sockets server...</div>
+	<form method ="post" action = "" id = "send-container">
+	<div class = "container">
+			<div class = "msg left">Helllo how are you</div>
+			<div class = "msg right">I am fine</div>	
+		</div>
+	<input type="text" class="text-box" id="name-input" placeholder="Your Name">
+	<input type="text" class="text-box" id="message-input" placeholder="Your Message" onkeyup="handleKeyUp(event)">
+	<p>Press enter to send message</p>
+	<div><button type = "submit">Send</button></div>
+	</form>
+</div>
+<!--<script type="text/javascript" src="js-index.js"></script> -->
+</body>
+</html>
+<script>
+//var socket = io();
+const socket = io.connect('http://localhost:8080/');
+const form   = document.getElementById('send-container');
+const msgInp = document.getElementById('messageInp');
+const msgCnt = document.querySelector(".container");
+
+const append = (message, position) => {
+
+	const msgElm = document.createElement('div');
+	msgElm.innerText  = message;
+	msgElm.classList.add('message');
+	msgElm.classList.add('position');
+	msgCnt.append(msgElm);
+}
+
+
+const name   = prompt("Enter your name to join"); 
+socket.emit('new-user-joined', name);
+
+socket.on('user-joined', name => {
+	append('${name} join the chat', 'right');
+});
+
+</script>
