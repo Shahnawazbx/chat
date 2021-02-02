@@ -45,6 +45,7 @@ http.listen(3000, () => {
 //const io    = require('socket.io')(http);
 
 //http = require("http");
+const port = process.env.port || 3000;
 const io = require('socket.io')(3000)
 const user = {};
 console.log("listen to po outside");
