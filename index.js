@@ -1,3 +1,16 @@
+const http = require('http');
+const port = process.env.PORT || 3000
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.end('<h1>Hello World</h1>');
+});
+
+server.listen(port,() => {
+  console.log(`Server running at port `+port);
+});
+
 /*
 const app   = require('express')();
 const http  = require('http').createServer(app);
@@ -45,22 +58,22 @@ http.listen(3000, () => {
 //const io    = require('socket.io')(http);
 
 //http = require("http");
-const port = process.env.port || 3000;
-const io = require('socket.io')(3000)
-const user = {};
-console.log("listen to po outside");
-io.on('connection', socket => {
+// const port = process.env.port || 3000;
+// const io = require('socket.io')(port)
+// const user = {};
+// console.log("listen to po outside");
+// io.on('connection', socket => {
 
-	console.log("listen to port helllo");
-	socket.on('new-user-joined', name => {
+	// console.log("listen to port helllo");
+	// socket.on('new-user-joined', name => {
 		
-		console.log("New User", name);
-		users[socket.id] = name;
-		socket.broadcast.emit('user-joined', name);
-	})
-	socket.on('send', message => {
-		socket.broadcast.emit('recieve', {message:message,name:user[socket.id]})
-	});
+		// console.log("New User", name);
+		// users[socket.id] = name;
+		// socket.broadcast.emit('user-joined', name);
+	// })
+	// socket.on('send', message => {
+		// socket.broadcast.emit('recieve', {message:message,name:user[socket.id]})
+	// });
 
-});
+// });
 
